@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	outfile := "out.png" // Output file
+	var outfile string // Output file
 
 	app := &cli.App{ // CLI Config
 		Name:      "genim",
@@ -32,6 +32,10 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
+			if outfile == "" {
+				outfile = "out.png"
+			}
+
 			// The input string as unix timestamp
 			instring := strconv.FormatInt(time.Now().UnixNano(), 10)
 
