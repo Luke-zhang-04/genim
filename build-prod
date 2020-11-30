@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mkdir -v bin
+
+GOOS=darwin GOARCH=amd64 go build -o ./bin/genim-macos src/* &
+GOOS=linux GOARCH=amd64 go build -o ./bin/genim-linux src/* &
+GOOS=windows GOARCH=amd64 go build -o ./bin/genim-windows.exe src/* &
+
+wait
