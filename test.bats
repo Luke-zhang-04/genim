@@ -36,3 +36,9 @@
     [ "$(file out.png grep | "512 x 512")" ]
     rm -rf out.png
 }
+
+@test "should be able to generate images random" {
+    ./genim --rand
+    [ "$(ls out.png)" ]
+    rm -rf out.png
+}

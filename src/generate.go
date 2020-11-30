@@ -6,7 +6,9 @@ BSD-3-Clause License
 */
 
 import (
+	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/fogleman/gg"
 )
@@ -21,6 +23,12 @@ func hexToBase10(val string) int64 {
 	return 0
 }
 
+func randint(min, max int) int {
+	rand.Seed(time.Now().UnixNano())
+
+	return rand.Intn(max-min+1) + min
+}
+
 // Generate generates the image
 // outfile - output file of image
 // hashedString - hashed string with hex numbers to generate image from
@@ -30,6 +38,7 @@ func hexToBase10(val string) int64 {
 func Generate(
 	outfile,
 	hashedString string,
+	isRandom,
 	isSymmetric bool,
 	width,
 	height,
@@ -41,6 +50,10 @@ func Generate(
 	const background string = "fff"                    // Background color
 	curX, curY := 0, 0                                 // Current x and y values
 	index := 0                                         // Index of hashed string
+
+	if isRandom {
+		index = randint(0, len(hashedString))
+	}
 
 	if threshold >= 13 { // If threshold is too high, lower it
 		threshold = 12
@@ -76,7 +89,11 @@ func Generate(
 
 			// Increment current x and index
 			curX += blocksize
-			index++
+			if isRandom {
+				index = randint(0, len(hashedString))
+			} else {
+				index++
+			}
 
 			if index >= len(hashedString) { // Reset index if index is greater than hashed string length
 				index = 0

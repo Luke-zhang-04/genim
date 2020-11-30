@@ -19,6 +19,7 @@ import (
 func main() {
 	var outfile string     // Output file
 	var isSymmetrical bool // If image should be symmetrical
+	var isRandom bool      // If image generation should use random indexes
 	var width, height int  // Dimensions of the image
 	var blocksize int      // Size of each square
 
@@ -33,6 +34,13 @@ func main() {
 				Usage:       "Output generated PNG to `FILE`",
 				Value:       "out.png",
 				Destination: &outfile,
+			},
+			&cli.BoolFlag{
+				Name:        "random",
+				Aliases:     []string{"r", "rand"},
+				Value:       false,
+				Usage:       "If image should be generated using random indexing",
+				Destination: &isRandom,
 			},
 			&cli.BoolFlag{
 				Name:        "symmetrical",
@@ -87,6 +95,7 @@ func main() {
 			err = Generate(
 				outfile,
 				hashedString,
+				isRandom,
 				isSymmetrical,
 				width,
 				height,
