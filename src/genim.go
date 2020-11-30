@@ -17,9 +17,9 @@ import (
 )
 
 func main() {
-	outfile := ""
+	outfile := "out.png" // Output file
 
-	app := &cli.App{
+	app := &cli.App{ // CLI Config
 		Name:      "genim",
 		Usage:     "Generate an image from a string",
 		Copyright: "2020 Luke Zhang; BSD-3-Clause License",
@@ -32,12 +32,15 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
+			// The input string as unix timestamp
 			instring := strconv.FormatInt(time.Now().UnixNano(), 10)
 
+			// If user provied an input string, use that instead
 			if c.NArg() > 0 {
 				instring = c.Args().Get(0)
 			}
 
+			// Hash the string with sha512
 			hasher := sha512.New()
 			_, err := hasher.Write([]byte(instring))
 
@@ -45,8 +48,10 @@ func main() {
 				log.Fatal(err)
 			}
 
+			// Encode hashed stirng to hex
 			hashedString := hex.EncodeToString(hasher.Sum(nil))
 
+			// Run generate function
 			err = Generate(outfile, hashedString)
 
 			return err
