@@ -22,13 +22,23 @@ func hexToBase10(val string) int64 {
 }
 
 // Generate generates the image
-func Generate(outfile, hashedString string, isSymmetric bool) error {
+// outfile - output file of image
+// hashedString - hashed string with hex numbers to generate image from
+// isSymmetric - if image should be symmetric along the y axis
+// width, height - dimensions of the image
+// blocksize - size of each square
+func Generate(
+	outfile,
+	hashedString string,
+	isSymmetric bool,
+	width,
+	height,
+	blocksize int,
+) error {
 	sliceStart := hexToBase10(string(hashedString[0])) // Start of slice to get colour
 	color := hashedString[sliceStart : sliceStart+6]   // The colour of the blocks
 	threshold := sliceStart                            // The amount before a block should be drawn
 	const background string = "fff"                    // Background color
-	blocksize := 128                                   // Size of each square
-	dimensions := []int{1024, 1024}                    // Dimensions of image
 	curX, curY := 0, 0                                 // Current x and y values
 	index := 0                                         // Index of hashed string
 
@@ -38,17 +48,17 @@ func Generate(outfile, hashedString string, isSymmetric bool) error {
 		threshold = 4
 	}
 
-	img := gg.NewContext(dimensions[0], dimensions[1])                      // New canvas
-	img.DrawRectangle(0, 0, float64(dimensions[0]), float64(dimensions[1])) // background
+	img := gg.NewContext(width, height)                      // New canvas
+	img.DrawRectangle(0, 0, float64(width), float64(height)) // background
 	img.SetHexColor(background)
 	img.Fill()
 
-	for curY < dimensions[1] { // For each row
-		leftSide := []bool{}                            // Left side of drawing for symmetry purposes
-		reverseIndex := dimensions[0]/(blocksize*2) - 1 // Reversed index for going backwards
+	for curY < height { // For each row
+		leftSide := []bool{}                    // Left side of drawing for symmetry purposes
+		reverseIndex := width/(blocksize*2) - 1 // Reversed index for going backwards
 
-		for curX < dimensions[0] { // For each column
-			if isSymmetric && curX >= dimensions[0]/2 {
+		for curX < width { // For each column
+			if isSymmetric && curX >= width/2 {
 				if leftSide[reverseIndex] {
 					img.DrawRectangle(float64(curX), float64(curY), float64(blocksize), float64(blocksize))
 				}
