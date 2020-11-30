@@ -26,7 +26,7 @@ func Generate(outfile, hashedString string) error {
 	sliceStart := hexToBase10(string(hashedString[0])) // Start of slice to get colour
 	color := hashedString[sliceStart : sliceStart+6]   // The colour of the blocks
 	threshold := sliceStart                            // The amount before a block should be drawn
-	const background string = "fff"                                // Background color
+	const background string = "fff"                    // Background color
 	blocksize := 128                                   // Size of each square
 	dimensions := []int{1024, 1024}                    // Dimensions of image
 	curX, curY := 0, 0                                 // Current x and y values
