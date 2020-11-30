@@ -12,9 +12,14 @@ jobs:
     name: Go ${{ matrix.go }} CI
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go }}
+
+      - uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.2.1
 
       - name: lint
         run: go vet src/*
@@ -23,4 +28,4 @@ jobs:
         run: ./build
 
       - name: test
-        run: ./test.bash
+        run: bats -r .
