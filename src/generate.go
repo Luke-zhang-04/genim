@@ -1,5 +1,10 @@
 package main
 
+/*
+Copyright (c) 2020 Luke Zhang luke-zhang-04.github.io/
+BSD-3-Clause License
+*/
+
 import (
 	"fmt"
 	"strconv"

@@ -1,5 +1,10 @@
 package main
 
+/*
+Copyright (c) 2020 Luke Zhang luke-zhang-04.github.io/
+BSD-3-Clause License
+*/
+
 import (
 	"crypto/sha512"
 	"encoding/hex"
@@ -15,8 +20,9 @@ func main() {
 	outfile := ""
 
 	app := &cli.App{
-		Name:  "genim",
-		Usage: "Generate an image from a string",
+		Name:      "genim",
+		Usage:     "Generate an image from a string",
+		Copyright: "2020 Luke Zhang; BSD-3-Clause License",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "out",
