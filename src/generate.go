@@ -50,7 +50,6 @@ func Generate(outfile, hashedString string) error {
 
 	for curY < dimensions[1] {
 		for curX < dimensions[0] {
-			fmt.Println(hexToBase10(string(hashedString[index])))
 			if threshold >= hexToBase10(string(hashedString[index])) {
 				img.DrawRectangle(float64(curX), float64(curY), float64(blocksize), float64(blocksize))
 			}
