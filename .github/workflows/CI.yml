@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ "1.14", "1.15" ]
+        go: [ "1.14", "1.15", "^1" ]
 
     name: Go ${{ matrix.go }} CI
     steps:
@@ -18,3 +18,9 @@ jobs:
 
       - name: lint
         run: go vet src/*
+
+      - name: build
+        run: ./build
+
+      - name: test
+        run: ./test.bash
