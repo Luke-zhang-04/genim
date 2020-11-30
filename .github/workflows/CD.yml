@@ -5,6 +5,8 @@ on:
 
 jobs:
   add-binaries:
+    runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
 
