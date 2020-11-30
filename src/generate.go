@@ -22,7 +22,7 @@ func hexToBase10(val string) int64 {
 }
 
 // Generate generates the image
-func Generate(outfile, hashedString string) error {
+func Generate(outfile, hashedString string, isSymmetric bool) error {
 	sliceStart := hexToBase10(string(hashedString[0])) // Start of slice to get colour
 	color := hashedString[sliceStart : sliceStart+6]   // The colour of the blocks
 	threshold := sliceStart                            // The amount before a block should be drawn
@@ -44,10 +44,24 @@ func Generate(outfile, hashedString string) error {
 	img.Fill()
 
 	for curY < dimensions[1] { // For each row
+		leftSide := []bool{}                            // Left side of drawing for symmetry purposes
+		reverseIndex := dimensions[0]/(blocksize*2) - 1 // Reversed index for going backwards
+
 		for curX < dimensions[0] { // For each column
-			// If current hex value is greater than threshold, draw the rectangle
-			if hexToBase10(string(hashedString[index])) >= threshold {
-				img.DrawRectangle(float64(curX), float64(curY), float64(blocksize), float64(blocksize))
+			if isSymmetric && curX >= dimensions[0]/2 {
+				if leftSide[reverseIndex] {
+					img.DrawRectangle(float64(curX), float64(curY), float64(blocksize), float64(blocksize))
+				}
+
+				reverseIndex--
+			} else {
+				shouldDrawBlock := hexToBase10(string(hashedString[index])) >= threshold
+				leftSide = append(leftSide, shouldDrawBlock)
+
+				// If current hex value is greater than threshold, draw the rectangle
+				if shouldDrawBlock {
+					img.DrawRectangle(float64(curX), float64(curY), float64(blocksize), float64(blocksize))
+				}
 			}
 
 			// Increment current x and index
@@ -58,6 +72,7 @@ func Generate(outfile, hashedString string) error {
 				index = 0
 			}
 		}
+
 		curY += blocksize // Increment current Y
 		curX = 0          // Reset current x
 	}

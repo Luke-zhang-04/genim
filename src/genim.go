@@ -17,7 +17,8 @@ import (
 )
 
 func main() {
-	var outfile string // Output file
+	var outfile string     // Output file
+	var isSymmetrical bool // If image should be symmetrical
 
 	app := &cli.App{ // CLI Config
 		Name:      "genim",
@@ -29,6 +30,12 @@ func main() {
 				Aliases:     []string{"o"},
 				Usage:       "Output generated PNG to `FILE`",
 				Destination: &outfile,
+			},
+			&cli.BoolFlag{
+				Name:        "symmetrical",
+				Aliases:     []string{"s", "sym"},
+				Usage:       "If image should be symmetrical on the y-axis",
+				Destination: &isSymmetrical,
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -56,7 +63,7 @@ func main() {
 			hashedString := hex.EncodeToString(hasher.Sum(nil))
 
 			// Run generate function
-			err = Generate(outfile, hashedString)
+			err = Generate(outfile, hashedString, isSymmetrical)
 
 			return err
 		},
