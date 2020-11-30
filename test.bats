@@ -33,7 +33,7 @@
 @test "should generate an image with width and height restraints" {
     ./genim --width 512 --height 512 --block 64
     [ "$(ls out.png)" ]
-    [ "$(file out.png grep | "512 x 512")" ]
+    [ "$(file out.png | grep "512 x 512")" ]
     rm -rf out.png
 }
 
